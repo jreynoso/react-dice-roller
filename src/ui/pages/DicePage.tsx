@@ -74,11 +74,12 @@ const ModifierGroup = styled.div`
 `
 
 const ModifierButton = styled.button<{ $active: boolean }>`
+  height: 3.5rem;
   border: 1px solid ${({ $active }) => ($active ? '#b24b1f' : '#d6cbbb')};
   border-radius: 999px;
   background: ${({ $active }) => ($active ? '#fff1e2' : '#fffaf2')};
   padding: 0.4rem 0.9rem;
-  font-size: 0.9rem;
+  font-size: 1rem;
   cursor: pointer;
 `
 
@@ -210,12 +211,11 @@ function DicePage() {
               </ModifierButton>
             ))}
           </ModifierGroup>
-          <p>Rolling {selectionCount} dice.</p>
         </Panel>
 
         <Panel>
           <PanelTitle>Roll</PanelTitle>
-          <RollButton onRoll={roll} disabled={pendingRoll !== null} />
+          <RollButton onRoll={roll} selectionCount={selectionCount} modifier={modifier} disabled={pendingRoll !== null} />
           <ResultDisplay text={message} />
 
           {result ? (
@@ -254,20 +254,20 @@ function DicePage() {
       {pendingRoll ? (
         <ModalOverlay>
           <Modal role="dialog" aria-modal="true" aria-label="Complication">
-            <ModalTitle>Complication?</ModalTitle>
+            <ModalTitle>Wild Die Outcome</ModalTitle>
             <ModalBody>
-              The wild die rolled a 1 on the first roll. Is this a complication?
+              The wild die rolled a 1 on the first roll.
             </ModalBody>
             <ModalActions>
               <ModalButton type="button" onClick={() => decideComplication(true)}>
-                Yes, complication
+                Treat as a complication
               </ModalButton>
               <ModalButton
                 type="button"
                 $primary
                 onClick={() => decideComplication(false)}
               >
-                No, subtract
+                Normal
               </ModalButton>
             </ModalActions>
           </Modal>

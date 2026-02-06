@@ -2,6 +2,8 @@ import styled from 'styled-components'
 
 type RollButtonProps = {
   onRoll: () => void
+  selectionCount: number
+  modifier: number
   disabled?: boolean
 }
 
@@ -25,10 +27,11 @@ const Button = styled.button`
   }
 `
 
-function RollButton({ onRoll, disabled = false }: RollButtonProps) {
+function RollButton({ onRoll, selectionCount, modifier, disabled = false }: RollButtonProps) {
+  const panelTitle = `${selectionCount ? ' ' + selectionCount + 'D6' + (modifier ? '+' + modifier : '') : 'the die'}`
   return (
     <Button type="button" onClick={onRoll} disabled={disabled}>
-      Roll the die
+      Roll {panelTitle}
     </Button>
   )
 }
