@@ -4,28 +4,21 @@ import { randomInt } from '../../infrastructure/rng/randomInt'
 import type { ScoredRoll } from '../../domain/dice/rollResult'
 import { scoreRoll } from '../../domain/dice/scoreRoll'
 
-export type DiceSelection = {
-  columns: number
-  rows: number
-}
-
 export type DiceRollState = {
   result: ScoredRoll | null
   roll: () => void
-  selection: DiceSelection
-  setSelection: (selection: DiceSelection) => void
-  selectedCount: number
+  selectionCount: number
+  setSelectionCount: (count: number) => void
 }
 
-const defaultSelection: DiceSelection = { columns: 1, rows: 1 }
+const defaultSelectionCount = 5
 
 export function useDiceRoll(): DiceRollState {
   const [result, setResult] = useState<ScoredRoll | null>(null)
-  const [selection, setSelection] = useState<DiceSelection>(defaultSelection)
-  const selectedCount = selection.columns * selection.rows
+  const [selectionCount, setSelectionCount] = useState(defaultSelectionCount)
 
   const roll = useCallback(() => {
-    const rolled = rollDice(randomInt, selectedCount)
+    const rolled = rollDice(randomInt, selectionCount)
     let complicationDecision: boolean | null = null
 
     if (rolled.wild.rolls[0] === 1) {
@@ -35,7 +28,7 @@ export function useDiceRoll(): DiceRollState {
     }
 
     setResult(scoreRoll(rolled, complicationDecision))
-  }, [selectedCount])
+  }, [selectionCount])
 
-  return { result, roll, selection, setSelection, selectedCount }
+  return { result, roll, selectionCount, setSelectionCount }
 }

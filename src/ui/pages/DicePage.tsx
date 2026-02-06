@@ -101,7 +101,7 @@ const Summary = styled.div`
 `
 
 function DicePage() {
-  const { result, roll, selection, setSelection, selectedCount } = useDiceRoll()
+  const { result, roll, selectionCount, setSelectionCount } = useDiceRoll()
   const message = result ? toDisplayText(result) : 'Roll to see the outcome.'
   const summary = result ? toDisplaySummary(result) : []
 
@@ -110,7 +110,7 @@ function DicePage() {
       <Header>
         <Overline>Dice Roller</Overline>
         <h1>Build your pool. Let the wild die ride.</h1>
-        <p>Drag to select up to 12 dice in a 4x3 grid.</p>
+        <p>Select dice on the 4x3 grid. Boxes fill left to right, top to bottom.</p>
       </Header>
 
       <Panels>
@@ -119,10 +119,10 @@ function DicePage() {
           <DiceSelector
             columns={4}
             rows={3}
-            selection={selection}
-            onSelect={setSelection}
+            selectionCount={selectionCount}
+            onSelect={setSelectionCount}
           />
-          <p>Rolling {selectedCount} dice.</p>
+          <p>Rolling {selectionCount} dice.</p>
         </Panel>
 
         <Panel>

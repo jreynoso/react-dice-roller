@@ -1,12 +1,10 @@
-import { useMemo, useState } from 'react'
 import styled from 'styled-components'
-import type { DiceSelection } from '../../adapters/state/useDiceRoll'
 
 type DiceSelectorProps = {
   columns: number
   rows: number
-  selection: DiceSelection
-  onSelect: (selection: DiceSelection) => void
+  selectionCount: number
+  onSelect: (count: number) => void
 }
 
 const Selector = styled.section`
@@ -22,12 +20,15 @@ const Grid = styled.div<{ $columns: number; $rows: number }>`
   gap: 0.5rem;
 `
 
-const Cell = styled.div<{ $selected: boolean }>`
+const Cell = styled.button<{
+  $selected: boolean
+}>`
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 0.6rem;
   border: 2px solid ${({ $selected }) => ($selected ? '#b24b1f' : '#d6cbbb')};
   background: ${({ $selected }) => ($selected ? '#fff1e2' : '#fffaf2')};
+  cursor: pointer;
 `
 
 const Count = styled.p`
@@ -36,56 +37,35 @@ const Count = styled.p`
   color: #6f604b;
 `
 
-function DiceSelector({ columns, rows, selection, onSelect }: DiceSelectorProps) {
-  const [dragging, setDragging] = useState(false)
-
-  const cells = useMemo(() => {
-    return Array.from({ length: rows }, (_, rowIndex) =>
-      Array.from({ length: columns }, (_, colIndex) => ({
-        row: rowIndex + 1,
-        column: colIndex + 1,
-      })),
-    )
-  }, [columns, rows])
-
-  const handleSelect = (row: number, column: number) => {
-    onSelect({ rows: row, columns: column })
-  }
-
-  const selectedCount = selection.columns * selection.rows
+function DiceSelector({
+  columns,
+  rows,
+  selectionCount,
+  onSelect,
+}: DiceSelectorProps) {
+  const totalCells = columns * rows
 
   return (
     <Selector>
-      <Grid
-        $columns={columns}
-        $rows={rows}
-        role="grid"
-        aria-label="Dice selection"
-        onPointerUp={() => setDragging(false)}
-        onPointerLeave={() => setDragging(false)}
-      >
-        {cells.flat().map(({ row, column }) => {
-          const isSelected = row <= selection.rows && column <= selection.columns
+      <Grid $columns={columns} $rows={rows} role="grid" aria-label="Dice selection">
+        {Array.from({ length: totalCells }, (_, index) => {
+          const count = index + 1
+          const isSelected = count <= selectionCount
+
           return (
             <Cell
-              key={`${row}-${column}`}
+              key={count}
+              type="button"
               role="gridcell"
               aria-selected={isSelected}
               $selected={isSelected}
-              onPointerDown={() => {
-                setDragging(true)
-                handleSelect(row, column)
-              }}
-              onPointerEnter={() => {
-                if (dragging) {
-                  handleSelect(row, column)
-                }
-              }}
+              onClick={() => onSelect(count)}
             />
           )
         })}
       </Grid>
-      <Count>Selected dice: {selectedCount}</Count>
+
+      <Count>Selected dice: {selectionCount}</Count>
     </Selector>
   )
 }
