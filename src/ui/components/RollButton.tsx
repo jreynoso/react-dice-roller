@@ -2,6 +2,7 @@ import styled from 'styled-components'
 
 type RollButtonProps = {
   onRoll: () => void
+  disabled?: boolean
 }
 
 const Button = styled.button`
@@ -16,11 +17,17 @@ const Button = styled.button`
   &:hover {
     filter: brightness(0.95);
   }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    filter: none;
+  }
 `
 
-function RollButton({ onRoll }: RollButtonProps) {
+function RollButton({ onRoll, disabled = false }: RollButtonProps) {
   return (
-    <Button type="button" onClick={onRoll}>
+    <Button type="button" onClick={onRoll} disabled={disabled}>
       Roll the die
     </Button>
   )

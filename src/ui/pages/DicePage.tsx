@@ -116,6 +116,53 @@ const Summary = styled.div`
   color: #3b3126;
 `
 
+const ModalOverlay = styled.div`
+  position: fixed;
+  inset: 0;
+  background: rgba(18, 14, 10, 0.35);
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+`
+
+const Modal = styled.div`
+  background: #fffaf2;
+  border: 1px solid var(--border);
+  border-radius: 1.25rem;
+  padding: 2rem;
+  max-width: 420px;
+  width: 100%;
+  display: grid;
+  gap: 1rem;
+  box-shadow: var(--shadow);
+`
+
+const ModalTitle = styled.h3`
+  margin: 0;
+  font-size: 1.2rem;
+`
+
+const ModalBody = styled.p`
+  margin: 0;
+  color: #3b3126;
+`
+
+const ModalActions = styled.div`
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+`
+
+const ModalButton = styled.button<{ $primary?: boolean }>`
+  border: 1px solid ${({ $primary }) => ($primary ? '#b24b1f' : '#d6cbbb')};
+  border-radius: 999px;
+  background: ${({ $primary }) => ($primary ? '#b24b1f' : '#fffaf2')};
+  color: ${({ $primary }) => ($primary ? '#fffaf2' : '#3b3126')};
+  padding: 0.5rem 1.2rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+`
+
 function DicePage() {
   const {
     result,
@@ -124,8 +171,14 @@ function DicePage() {
     setSelectionCount,
     modifier,
     setModifier,
+    pendingRoll,
+    decideComplication,
   } = useDiceRoll()
-  const message = result ? toDisplayText(result) : 'Roll to see the outcome.'
+  const message = pendingRoll
+    ? 'Wild die rolled a 1. Decide if this is a complication.'
+    : result
+      ? toDisplayText(result)
+      : 'Roll to see the outcome.'
   const summary = result ? toDisplaySummary(result) : []
 
   return (
@@ -162,7 +215,7 @@ function DicePage() {
 
         <Panel>
           <PanelTitle>Roll</PanelTitle>
-          <RollButton onRoll={roll} />
+          <RollButton onRoll={roll} disabled={pendingRoll !== null} />
           <ResultDisplay text={message} />
 
           {result ? (
@@ -198,6 +251,28 @@ function DicePage() {
           ) : null}
         </Panel>
       </Panels>
+      {pendingRoll ? (
+        <ModalOverlay>
+          <Modal role="dialog" aria-modal="true" aria-label="Complication">
+            <ModalTitle>Complication?</ModalTitle>
+            <ModalBody>
+              The wild die rolled a 1 on the first roll. Is this a complication?
+            </ModalBody>
+            <ModalActions>
+              <ModalButton type="button" onClick={() => decideComplication(true)}>
+                Yes, complication
+              </ModalButton>
+              <ModalButton
+                type="button"
+                $primary
+                onClick={() => decideComplication(false)}
+              >
+                No, subtract
+              </ModalButton>
+            </ModalActions>
+          </Modal>
+        </ModalOverlay>
+      ) : null}
     </Page>
   )
 }
