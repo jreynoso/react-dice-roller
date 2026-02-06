@@ -1,9 +1,13 @@
-import '../ui/styles/tokens.css'
-import '../ui/styles/dice.css'
+import GlobalStyles from '../ui/styles/globalStyles'
 import DicePage from '../ui/pages/DicePage'
 
 function App() {
-  return <DicePage />
+  return (
+    <>
+      <GlobalStyles />
+      <DicePage />
+    </>
+  )
 }
 
 export default App
