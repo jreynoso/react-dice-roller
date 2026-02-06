@@ -1,10 +1,6 @@
-import type { RollResult } from '../../domain/dice/rollResult'
-import { isMaxRoll } from '../../domain/dice/rules'
+import type { ScoredRoll } from '../../domain/dice/rollResult'
 
-export function toDisplayText(result: RollResult): string {
-  if (isMaxRoll(result.face)) {
-    return 'Critical! You rolled a 6.'
-  }
-
-  return `You rolled a ${result.face}.`
+export function toDisplayText(result: ScoredRoll): string {
+  const diceCount = result.otherDice.length + 1
+  return `Rolled ${diceCount} dice. Total: ${result.total}.`
 }

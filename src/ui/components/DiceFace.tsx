@@ -3,25 +3,42 @@ import type { DieFace } from '../../domain/dice/Die'
 
 type DiceFaceProps = {
   face: DieFace | null
+  isWild?: boolean
+  label?: string
 }
 
-const Face = styled.div`
-  width: 6rem;
-  height: 6rem;
-  border: 2px solid var(--ink);
-  border-radius: 1rem;
+const Face = styled.div<{ $isWild: boolean }>`
+  width: 3.5rem;
+  height: 3.5rem;
+  border: 2px solid ${({ $isWild }) => ($isWild ? '#b24b1f' : 'var(--ink)')};
+  border-radius: 0.85rem;
   display: grid;
   place-items: center;
-  font-size: 2.5rem;
+  font-size: 1.4rem;
   font-weight: 700;
-  background: #fffaf2;
+  background: ${({ $isWild }) => ($isWild ? '#fff1e2' : '#fffaf2')};
+  color: ${({ $isWild }) => ($isWild ? '#7a2c10' : 'inherit')};
 `
 
-function DiceFace({ face }: DiceFaceProps) {
+const Label = styled.span`
+  font-size: 0.7rem;
+  letter-spacing: 0.12rem;
+  text-transform: uppercase;
+  color: #6f604b;
+`
+
+const Wrapper = styled.div`
+  display: grid;
+  gap: 0.35rem;
+  justify-items: center;
+`
+
+function DiceFace({ face, isWild = false, label }: DiceFaceProps) {
   return (
-    <Face aria-live="polite">
-      {face ?? '-'}
-    </Face>
+    <Wrapper aria-live="polite">
+      <Face $isWild={isWild}>{face ?? '-'}</Face>
+      {label ? <Label>{label}</Label> : null}
+    </Wrapper>
   )
 }
 
