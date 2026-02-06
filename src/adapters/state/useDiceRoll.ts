@@ -9,13 +9,17 @@ export type DiceRollState = {
   roll: () => void
   selectionCount: number
   setSelectionCount: (count: number) => void
+  modifier: number
+  setModifier: (value: number) => void
 }
 
 const defaultSelectionCount = 5
+const defaultModifier = 0
 
 export function useDiceRoll(): DiceRollState {
   const [result, setResult] = useState<ScoredRoll | null>(null)
   const [selectionCount, setSelectionCount] = useState(defaultSelectionCount)
+  const [modifier, setModifier] = useState(defaultModifier)
 
   const roll = useCallback(() => {
     const rolled = rollDice(randomInt, selectionCount)
@@ -27,8 +31,8 @@ export function useDiceRoll(): DiceRollState {
       )
     }
 
-    setResult(scoreRoll(rolled, complicationDecision))
-  }, [selectionCount])
+    setResult(scoreRoll(rolled, complicationDecision, modifier))
+  }, [selectionCount, modifier])
 
-  return { result, roll, selectionCount, setSelectionCount }
+  return { result, roll, selectionCount, setSelectionCount, modifier, setModifier }
 }

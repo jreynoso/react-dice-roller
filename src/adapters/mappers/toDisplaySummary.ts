@@ -31,6 +31,10 @@ export function toDisplaySummary(result: ScoredRoll): string[] {
     }
   }
 
+  if (result.modifier !== 0) {
+    lines.push(`Modifier: +${result.modifier}`)
+  }
+
   lines.push(`Total: ${result.total}`)
 
   return lines

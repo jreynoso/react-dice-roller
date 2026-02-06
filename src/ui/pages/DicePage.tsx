@@ -66,6 +66,22 @@ const PanelTitle = styled.h2`
   font-size: 1.3rem;
 `
 
+const ModifierGroup = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+`
+
+const ModifierButton = styled.button<{ $active: boolean }>`
+  border: 1px solid ${({ $active }) => ($active ? '#b24b1f' : '#d6cbbb')};
+  border-radius: 999px;
+  background: ${({ $active }) => ($active ? '#fff1e2' : '#fffaf2')};
+  padding: 0.4rem 0.9rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+`
+
 const DiceRow = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -101,7 +117,14 @@ const Summary = styled.div`
 `
 
 function DicePage() {
-  const { result, roll, selectionCount, setSelectionCount } = useDiceRoll()
+  const {
+    result,
+    roll,
+    selectionCount,
+    setSelectionCount,
+    modifier,
+    setModifier,
+  } = useDiceRoll()
   const message = result ? toDisplayText(result) : 'Roll to see the outcome.'
   const summary = result ? toDisplaySummary(result) : []
 
@@ -122,6 +145,18 @@ function DicePage() {
             selectionCount={selectionCount}
             onSelect={setSelectionCount}
           />
+          <ModifierGroup>
+            {[0, 1, 2].map((value) => (
+              <ModifierButton
+                key={value}
+                type="button"
+                $active={modifier === value}
+                onClick={() => setModifier(value)}
+              >
+                {value === 0 ? 'No modifier' : `+${value}`}
+              </ModifierButton>
+            ))}
+          </ModifierGroup>
           <p>Rolling {selectionCount} dice.</p>
         </Panel>
 

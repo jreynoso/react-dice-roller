@@ -16,6 +16,7 @@ function maxDie(values: DieFace[]): DieFace | null {
 export function scoreRoll(
   rolled: RolledDice,
   complicationDecision: boolean | null,
+  modifier: number,
 ): ScoredRoll {
   const firstRoll = rolled.wild.rolls[0]
   const wildTotal = sum(rolled.wild.rolls)
@@ -26,12 +27,12 @@ export function scoreRoll(
   const exploded = rolled.wild.rolls.length > 1
 
   let penalty = 0
-  let total = baseTotal
+  let total = baseTotal + modifier
   const decision = complicationDecision
 
   if (isComplicationRoll && decision === false) {
     penalty = 1 + (highestOther ?? 0)
-    total = baseTotal - penalty
+    total = baseTotal - penalty + modifier
   }
 
   return {
@@ -48,5 +49,6 @@ export function scoreRoll(
     baseTotal,
     total,
     highestOther,
+    modifier,
   }
 }

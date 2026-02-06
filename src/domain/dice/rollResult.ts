@@ -21,4 +21,5 @@ export type ScoredRoll = {
   baseTotal: number
   total: number
   highestOther: DieFace | null
+  modifier: number
 }
