@@ -2,12 +2,20 @@ import { createGlobalStyle } from 'styled-components'
 
 const GlobalStyles = createGlobalStyle`
   :root {
-    --bg: #f7f3ea;
-    --ink: #1b1a17;
-    --accent: #d9712a;
-    --panel: #ffffff;
-    --border: #e6dfd2;
-    --shadow: 0 20px 50px rgba(27, 26, 23, 0.12);
+    --bg: #04070f;
+    --bg-secondary: #0a1220;
+    --ink: #f4f7ff;
+    --muted: #b8c2d9;
+    --accent: #f5d64c;
+    --accent-ink: #17120a;
+    --panel: #111a2b;
+    --panel-secondary: #0c1322;
+    --border: #2f3f61;
+    --wild-bg: #2a1216;
+    --wild-border: #ff6d5f;
+    --wild-ink: #ffcdc4;
+    --overlay: rgba(1, 4, 10, 0.72);
+    --shadow: 0 22px 65px rgba(0, 0, 0, 0.42);
   }
 
   *,
@@ -21,7 +29,10 @@ const GlobalStyles = createGlobalStyle`
     min-height: 100vh;
     font-family: 'Georgia', 'Times New Roman', serif;
     color: var(--ink);
-    background: radial-gradient(circle at top, #fff6e5 0%, var(--bg) 55%);
+    background:
+      radial-gradient(circle at 20% 15%, rgba(245, 214, 76, 0.18) 0%, transparent 35%),
+      radial-gradient(circle at 78% 18%, rgba(107, 176, 255, 0.18) 0%, transparent 40%),
+      linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg) 72%);
   }
 
   #root {

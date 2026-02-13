@@ -10,21 +10,21 @@ type DiceFaceProps = {
 const Face = styled.div<{ $isWild: boolean }>`
   width: 3.5rem;
   height: 3.5rem;
-  border: 2px solid ${({ $isWild }) => ($isWild ? '#b24b1f' : 'var(--ink)')};
+  border: 2px solid ${({ $isWild }) => ($isWild ? 'var(--wild-border)' : 'var(--border)')};
   border-radius: 0.85rem;
   display: grid;
   place-items: center;
   font-size: 1.4rem;
   font-weight: 700;
-  background: ${({ $isWild }) => ($isWild ? '#fff1e2' : '#fffaf2')};
-  color: ${({ $isWild }) => ($isWild ? '#7a2c10' : 'inherit')};
+  background: ${({ $isWild }) => ($isWild ? 'var(--wild-bg)' : 'var(--panel-secondary)')};
+  color: ${({ $isWild }) => ($isWild ? 'var(--wild-ink)' : 'var(--ink)')};
 `
 
 const Label = styled.span`
   font-size: 0.7rem;
   letter-spacing: 0.12rem;
   text-transform: uppercase;
-  color: #6f604b;
+  color: var(--muted);
 `
 
 const Wrapper = styled.div`
