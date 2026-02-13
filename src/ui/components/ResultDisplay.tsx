@@ -102,7 +102,7 @@ function ResultDisplay({
   result,
 }: ResultDisplayProps) {
   if (result) {
-    const formula = `Rolled ${result.otherDice.length + 1}D6${result.modifier ? `+${result.modifier}` : ''}`
+    const formula = `Rolled ${result.otherDice.length + 1}D${result.modifier ? `+${result.modifier}` : ''}`
     const summary = toDisplaySummary(result)
     const summaryStartIndex = summary.findIndex((line) => line.startsWith('Other dice'))
     const detailLines = summaryStartIndex >= 0 ? summary.slice(summaryStartIndex) : summary

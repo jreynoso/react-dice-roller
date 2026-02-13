@@ -30,7 +30,7 @@ const Button = styled.button`
 `
 
 function RollButton({ onRoll, selectionCount, modifier, disabled = false }: RollButtonProps) {
-  const panelTitle = `${selectionCount ? ' ' + selectionCount + 'D6' + (modifier ? '+' + modifier : '') : 'the die'}`
+  const panelTitle = `${selectionCount ? ' ' + selectionCount + 'D' + (modifier ? '+' + modifier : '') : 'the die'}`
   return (
     <Button type="button" onClick={onRoll} disabled={disabled}>
       Roll {panelTitle}
