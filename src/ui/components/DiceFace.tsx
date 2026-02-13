@@ -20,7 +20,6 @@ const Face = styled.div<{ $isWild: boolean; $disabled: boolean }>`
   background: ${({ $isWild }) => ($isWild ? 'var(--wild-bg)' : 'var(--panel-secondary)')};
   color: ${({ $isWild }) => ($isWild ? 'var(--wild-ink)' : 'var(--ink)')};
   opacity: ${({ $disabled }) => ($disabled ? 0.45 : 1)};
-  filter: ${({ $disabled }) => ($disabled ? 'grayscale(1)' : 'none')};
 `
 
 const Label = styled.span<{ $disabled: boolean }>`
