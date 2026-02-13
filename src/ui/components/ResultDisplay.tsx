@@ -4,6 +4,7 @@ type ResultDisplayProps = {
   text?: string
   formula?: string
   total?: number
+  detailLines?: string[]
 }
 
 const Text = styled.p`
@@ -43,13 +44,59 @@ const TotalBox = styled.div`
   flex: 0 0 auto;
 `
 
-function ResultDisplay({ text, formula, total }: ResultDisplayProps) {
+const RollDetails = styled.details`
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--panel-secondary);
+  padding: 0.85rem 1rem;
+`
+
+const RollDetailsSummary = styled.summary`
+  cursor: pointer;
+  font-weight: 600;
+  user-select: none;
+`
+
+const RollDetailsBody = styled.div`
+  margin-top: 0.9rem;
+`
+
+const Summary = styled.div`
+  display: grid;
+  gap: 0.35rem;
+  text-align: center;
+  font-size: 0.95rem;
+  color: var(--muted);
+`
+
+const ResultWrapper = styled.div`
+  width: 100%;
+  display: grid;
+  gap: 0.9rem;
+`
+
+function ResultDisplay({ text, formula, total, detailLines = [] }: ResultDisplayProps) {
   if (formula && typeof total === 'number') {
     return (
-      <Callout aria-live="polite">
-        <Formula>{formula}</Formula>
-        <TotalBox aria-label={`Total ${total}`}>{total}</TotalBox>
-      </Callout>
+      <ResultWrapper>
+        <Callout aria-live="polite">
+          <Formula>{formula}</Formula>
+          <TotalBox aria-label={`Total ${total}`}>{total}</TotalBox>
+        </Callout>
+        {detailLines.length > 0 ? (
+          <RollDetails>
+            <RollDetailsSummary>Details</RollDetailsSummary>
+            <RollDetailsBody>
+              <Summary>
+                {detailLines.map((line, index) => (
+                  <div key={`${index}-${line}`}>{line}</div>
+                ))}
+              </Summary>
+            </RollDetailsBody>
+          </RollDetails>
+        ) : null}
+      </ResultWrapper>
     )
   }
 

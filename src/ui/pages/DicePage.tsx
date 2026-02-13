@@ -109,34 +109,6 @@ const WildRollsRow = styled.div`
   justify-content: center;
 `
 
-const Summary = styled.div`
-  display: grid;
-  gap: 0.35rem;
-  text-align: center;
-  font-size: 0.95rem;
-  color: var(--muted);
-`
-
-const RollDetails = styled.details`
-  width: 100%;
-  border: 1px solid var(--border);
-  border-radius: 1rem;
-  background: var(--panel-secondary);
-  padding: 0.85rem 1rem;
-`
-
-const RollDetailsSummary = styled.summary`
-  cursor: pointer;
-  font-weight: 600;
-  user-select: none;
-`
-
-const RollDetailsBody = styled.div`
-  margin-top: 0.9rem;
-  display: grid;
-  gap: 1rem;
-`
-
 const ModalOverlay = styled.div`
   position: fixed;
   inset: 0;
@@ -202,6 +174,8 @@ function DicePage() {
     ? `Rolled ${result.otherDice.length + 1}D6${result.modifier ? `+${result.modifier}` : ''}`
     : null
   const summary = result ? toDisplaySummary(result) : []
+  const summaryStartIndex = summary.findIndex((line) => line.startsWith('Other dice'))
+  const collapsibleSummary = summaryStartIndex >= 0 ? summary.slice(summaryStartIndex) : summary
 
   return (
     <Page>
@@ -237,7 +211,12 @@ function DicePage() {
         <Panel>
           <PanelTitle>Roll</PanelTitle>
           <RollButton onRoll={roll} selectionCount={selectionCount} modifier={modifier} disabled={pendingRoll !== null} />
-          <ResultDisplay text={message} formula={rollFormula ?? undefined} total={result?.total} />
+          <ResultDisplay
+            text={message}
+            formula={rollFormula ?? undefined}
+            total={result?.total}
+            detailLines={collapsibleSummary}
+          />
 
           {result ? (
             <>
@@ -262,17 +241,6 @@ function DicePage() {
                   </WildRollsRow>
                 </WildRolls>
               ) : null}
-
-              <RollDetails>
-                <RollDetailsSummary>Details</RollDetailsSummary>
-                <RollDetailsBody>
-                <Summary>
-                  {summary.map((line, index) => (
-                    <div key={`${index}-${line}`}>{line}</div>
-                  ))}
-                </Summary>
-                </RollDetailsBody>
-              </RollDetails>
             </>
           ) : null}
         </Panel>
