@@ -148,7 +148,7 @@ function DicePage() {
       <Header>
         <Overline>Dice Roller</Overline>
         <h1>Build your pool. Let the wild die ride.</h1>
-        <p>Select dice on the 4x3 grid. Boxes fill left to right, top to bottom.</p>
+        <p>Select dice on the 4x3 grid and simulate rolling that many D6.</p>
       </Header>
 
       <Panels>
