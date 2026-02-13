@@ -74,7 +74,7 @@ const ModifierGroup = styled.div`
 `
 
 const ModifierButton = styled.button<{ $active: boolean }>`
-  height: 3.5rem;
+  height: 3rem;
   border: 1px solid ${({ $active }) => ($active ? 'var(--accent)' : 'var(--border)')};
   border-radius: 999px;
   background: ${({ $active }) => ($active ? 'rgba(245, 214, 76, 0.18)' : 'var(--panel-secondary)')};

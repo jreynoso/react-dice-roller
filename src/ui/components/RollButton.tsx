@@ -14,6 +14,7 @@ const Button = styled.button`
   color: var(--accent-ink);
   font-size: 1rem;
   padding: 0.75rem 2rem;
+  height: 3rem;
   cursor: pointer;
   box-shadow: 0 0 18px rgba(245, 214, 76, 0.35);
 
