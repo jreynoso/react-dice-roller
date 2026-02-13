@@ -1,10 +1,15 @@
 import styled from 'styled-components'
+import DiceFace from './DiceFace'
+import type { DieFace } from '../../domain/dice/Die'
 
 type ResultDisplayProps = {
   text?: string
   formula?: string
   total?: number
   detailLines?: string[]
+  otherDice?: DieFace[]
+  wildFirstRoll?: DieFace
+  wildExtraRolls?: DieFace[]
 }
 
 const Text = styled.p`
@@ -76,10 +81,60 @@ const ResultWrapper = styled.div`
   gap: 0.9rem;
 `
 
-function ResultDisplay({ text, formula, total, detailLines = [] }: ResultDisplayProps) {
-  if (formula && typeof total === 'number') {
+const DiceRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+`
+
+const WildRolls = styled.div`
+  display: grid;
+  gap: 0.5rem;
+  justify-items: center;
+`
+
+const WildRollsLabel = styled.p`
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+`
+
+const WildRollsRow = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+`
+
+function ResultDisplay({
+  text,
+  formula,
+  total,
+  detailLines = [],
+  otherDice = [],
+  wildFirstRoll,
+  wildExtraRolls = [],
+}: ResultDisplayProps) {
+  if (formula && typeof total === 'number' && wildFirstRoll) {
     return (
       <ResultWrapper>
+        <DiceRow>
+          {otherDice.map((face, index) => (
+            <DiceFace key={`die-${index}`} face={face} />
+          ))}
+          <DiceFace face={wildFirstRoll} isWild label="Wild" />
+        </DiceRow>
+        {wildExtraRolls.length > 0 ? (
+          <WildRolls>
+            <WildRollsLabel>Wild extra rolls</WildRollsLabel>
+            <WildRollsRow>
+              {wildExtraRolls.map((face, index) => (
+                <DiceFace key={`wild-${index}`} face={face} isWild />
+              ))}
+            </WildRollsRow>
+          </WildRolls>
+        ) : null}
         <Callout aria-live="polite">
           <Formula>{formula}</Formula>
           <TotalBox aria-label={`Total ${total}`}>{total}</TotalBox>

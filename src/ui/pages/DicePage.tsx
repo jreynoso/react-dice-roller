@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import DiceFace from '../components/DiceFace'
 import ResultDisplay from '../components/ResultDisplay'
 import RollButton from '../components/RollButton'
 import DiceSelector from '../components/DiceSelector'
@@ -81,32 +80,6 @@ const ModifierButton = styled.button<{ $active: boolean }>`
   padding: 0.4rem 0.9rem;
   font-size: 1rem;
   cursor: pointer;
-`
-
-const DiceRow = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  justify-content: center;
-`
-
-const WildRolls = styled.div`
-  display: grid;
-  gap: 0.5rem;
-  justify-items: center;
-`
-
-const WildRollsLabel = styled.p`
-  margin: 0;
-  font-size: 0.9rem;
-  color: var(--muted);
-`
-
-const WildRollsRow = styled.div`
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  justify-content: center;
 `
 
 const ModalOverlay = styled.div`
@@ -216,33 +189,10 @@ function DicePage() {
             formula={rollFormula ?? undefined}
             total={result?.total}
             detailLines={collapsibleSummary}
+            otherDice={result?.otherDice}
+            wildFirstRoll={result?.wild.firstRoll}
+            wildExtraRolls={result?.wild.rolls.slice(1)}
           />
-
-          {result ? (
-            <>
-              <DiceRow>
-                {result.otherDice.map((face, index) => (
-                  <DiceFace key={`die-${index}`} face={face} />
-                ))}
-                <DiceFace face={result.wild.firstRoll} isWild label="Wild" />
-              </DiceRow>
-
-              {result.wild.exploded ? (
-                <WildRolls>
-                  <WildRollsLabel>Wild extra rolls</WildRollsLabel>
-                  <WildRollsRow>
-                    {result.wild.rolls.slice(1).map((face, index) => (
-                      <DiceFace
-                        key={`wild-${index}`}
-                        face={face}
-                        isWild
-                      />
-                    ))}
-                  </WildRollsRow>
-                </WildRolls>
-              ) : null}
-            </>
-          ) : null}
         </Panel>
       </Panels>
       {pendingRoll ? (
