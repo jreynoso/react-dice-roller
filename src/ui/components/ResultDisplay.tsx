@@ -1,15 +1,11 @@
 import styled from 'styled-components'
 import DiceFace from './DiceFace'
-import type { DieFace } from '../../domain/dice/Die'
+import { toDisplaySummary } from '../../adapters/mappers/toDisplaySummary'
+import type { ScoredRoll } from '../../domain/dice/rollResult'
 
 type ResultDisplayProps = {
   text?: string
-  formula?: string
-  total?: number
-  detailLines?: string[]
-  otherDice?: DieFace[]
-  wildFirstRoll?: DieFace
-  wildExtraRolls?: DieFace[]
+  result?: ScoredRoll | null
 }
 
 const Text = styled.p`
@@ -109,21 +105,22 @@ const WildRollsRow = styled.div`
 
 function ResultDisplay({
   text,
-  formula,
-  total,
-  detailLines = [],
-  otherDice = [],
-  wildFirstRoll,
-  wildExtraRolls = [],
+  result,
 }: ResultDisplayProps) {
-  if (formula && typeof total === 'number' && wildFirstRoll) {
+  if (result) {
+    const formula = `Rolled ${result.otherDice.length + 1}D6${result.modifier ? `+${result.modifier}` : ''}`
+    const summary = toDisplaySummary(result)
+    const summaryStartIndex = summary.findIndex((line) => line.startsWith('Other dice'))
+    const detailLines = summaryStartIndex >= 0 ? summary.slice(summaryStartIndex) : summary
+    const wildExtraRolls = result.wild.rolls.slice(1)
+
     return (
       <ResultWrapper>
         <DiceRow>
-          {otherDice.map((face, index) => (
+          {result.otherDice.map((face, index) => (
             <DiceFace key={`die-${index}`} face={face} />
           ))}
-          <DiceFace face={wildFirstRoll} isWild label="Wild" />
+          <DiceFace face={result.wild.firstRoll} isWild label="Wild" />
         </DiceRow>
         {wildExtraRolls.length > 0 ? (
           <WildRolls>
@@ -137,7 +134,7 @@ function ResultDisplay({
         ) : null}
         <Callout aria-live="polite">
           <Formula>{formula}</Formula>
-          <TotalBox aria-label={`Total ${total}`}>{total}</TotalBox>
+          <TotalBox aria-label={`Total ${result.total}`}>{result.total}</TotalBox>
         </Callout>
         {detailLines.length > 0 ? (
           <RollDetails>
