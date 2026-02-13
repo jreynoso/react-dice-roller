@@ -31,16 +31,16 @@ const Formula = styled.p`
   color: var(--muted);
 `
 
-const TotalBox = styled.div`
+const TotalBox = styled.div<{ $isComplication: boolean }>`
   width: 3rem;
   height: 3rem;
-  border: 2px solid var(--border);
+  border: 2px solid ${({ $isComplication }) => ($isComplication ? '#cc6a00' : 'var(--border)')};
   border-radius: 0.75rem;
   display: grid;
   place-items: center;
   font-size: 1.2rem;
   font-weight: 700;
-  background: var(--panel);
+  background: ${({ $isComplication }) => ($isComplication ? 'rgba(204, 106, 0, 0.2)' : 'var(--panel)')};
   color: var(--ink);
   flex: 0 0 auto;
 `
@@ -90,12 +90,6 @@ const WildRolls = styled.div`
   justify-items: center;
 `
 
-const WildRollsLabel = styled.p`
-  margin: 0;
-  font-size: 0.9rem;
-  color: var(--muted);
-`
-
 const WildRollsRow = styled.div`
   display: flex;
   gap: 0.5rem;
@@ -114,6 +108,7 @@ function ResultDisplay({
     const detailLines = summaryStartIndex >= 0 ? summary.slice(summaryStartIndex) : summary
     const wildExtraRolls = result.wild.rolls.slice(1)
     const subtractsDice = result.wild.isComplicationRoll && result.wild.complicationDecision === false
+    const isComplication = result.wild.isComplicationRoll && result.wild.complicationDecision === true
     const subtractedOtherIndex = subtractsDice && result.highestOther
       ? result.otherDice.findIndex((value) => value === result.highestOther)
       : -1
@@ -137,7 +132,13 @@ function ResultDisplay({
         ) : null}
         <Callout aria-live="polite">
           <Formula>{formula}</Formula>
-          <TotalBox aria-label={`Total ${result.total}`}>{result.total}</TotalBox>
+          <TotalBox
+            $isComplication={isComplication}
+            aria-label={isComplication ? `Total ${result.total} complication` : `Total ${result.total}`}
+            title={isComplication ? 'complication' : undefined}
+          >
+            {isComplication ? `${result.total}!` : result.total}
+          </TotalBox>
         </Callout>
         {detailLines.length > 0 ? (
           <RollDetails>
