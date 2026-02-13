@@ -32,10 +32,36 @@ const Cell = styled.button<{
   cursor: pointer;
 `
 
-const Count = styled.p`
+const SelectionCallout = styled.div`
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--panel-secondary);
+  padding: 0.85rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+`
+
+const SelectionLabel = styled.p`
   margin: 0;
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: var(--muted);
+`
+
+const SelectionBox = styled.div`
+  width: 3rem;
+  height: 3rem;
+  border: 2px solid var(--border);
+  border-radius: 0.75rem;
+  display: grid;
+  place-items: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+  background: var(--panel);
+  color: var(--ink);
+  flex: 0 0 auto;
 `
 
 function DiceSelector({
@@ -66,7 +92,10 @@ function DiceSelector({
         })}
       </Grid>
 
-      <Count>Selected dice: {selectionCount}</Count>
+      <SelectionCallout aria-live="polite">
+        <SelectionLabel>Selected dice</SelectionLabel>
+        <SelectionBox aria-label={`Selected dice ${selectionCount}`}>{selectionCount}</SelectionBox>
+      </SelectionCallout>
     </Selector>
   )
 }
