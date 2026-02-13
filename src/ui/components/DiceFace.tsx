@@ -5,9 +5,10 @@ type DiceFaceProps = {
   face: DieFace | null
   isWild?: boolean
   label?: string
+  disabled?: boolean
 }
 
-const Face = styled.div<{ $isWild: boolean }>`
+const Face = styled.div<{ $isWild: boolean; $disabled: boolean }>`
   width: 3.5rem;
   height: 3.5rem;
   border: 2px solid ${({ $isWild }) => ($isWild ? 'var(--wild-border)' : 'var(--border)')};
@@ -18,13 +19,16 @@ const Face = styled.div<{ $isWild: boolean }>`
   font-weight: 700;
   background: ${({ $isWild }) => ($isWild ? 'var(--wild-bg)' : 'var(--panel-secondary)')};
   color: ${({ $isWild }) => ($isWild ? 'var(--wild-ink)' : 'var(--ink)')};
+  opacity: ${({ $disabled }) => ($disabled ? 0.45 : 1)};
+  filter: ${({ $disabled }) => ($disabled ? 'grayscale(1)' : 'none')};
 `
 
-const Label = styled.span`
+const Label = styled.span<{ $disabled: boolean }>`
   font-size: 0.7rem;
   letter-spacing: 0.12rem;
   text-transform: uppercase;
   color: var(--muted);
+  opacity: ${({ $disabled }) => ($disabled ? 0.55 : 1)};
 `
 
 const Wrapper = styled.div`
@@ -33,11 +37,11 @@ const Wrapper = styled.div`
   justify-items: center;
 `
 
-function DiceFace({ face, isWild = false, label }: DiceFaceProps) {
+function DiceFace({ face, isWild = false, label, disabled = false }: DiceFaceProps) {
   return (
     <Wrapper aria-live="polite">
-      <Face $isWild={isWild}>{face ?? '-'}</Face>
-      {label ? <Label>{label}</Label> : null}
+      <Face $isWild={isWild} $disabled={disabled}>{face ?? '-'}</Face>
+      {label ? <Label $disabled={disabled}>{label}</Label> : null}
     </Wrapper>
   )
 }

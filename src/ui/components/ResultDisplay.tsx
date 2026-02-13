@@ -113,14 +113,18 @@ function ResultDisplay({
     const summaryStartIndex = summary.findIndex((line) => line.startsWith('Other dice'))
     const detailLines = summaryStartIndex >= 0 ? summary.slice(summaryStartIndex) : summary
     const wildExtraRolls = result.wild.rolls.slice(1)
+    const subtractsDice = result.wild.isComplicationRoll && result.wild.complicationDecision === false
+    const subtractedOtherIndex = subtractsDice && result.highestOther
+      ? result.otherDice.findIndex((value) => value === result.highestOther)
+      : -1
 
     return (
       <ResultWrapper>
         <DiceRow>
           {result.otherDice.map((face, index) => (
-            <DiceFace key={`die-${index}`} face={face} />
+            <DiceFace key={`die-${index}`} face={face} disabled={index === subtractedOtherIndex} />
           ))}
-          <DiceFace face={result.wild.firstRoll} isWild label="Wild" />
+          <DiceFace face={result.wild.firstRoll} isWild label="Wild" disabled={subtractsDice} />
         </DiceRow>
         {wildExtraRolls.length > 0 ? (
           <WildRolls>
