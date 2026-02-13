@@ -4,7 +4,6 @@ import ResultDisplay from '../components/ResultDisplay'
 import RollButton from '../components/RollButton'
 import DiceSelector from '../components/DiceSelector'
 import { useDiceRoll } from '../../adapters/state/useDiceRoll'
-import { toDisplayText } from '../../adapters/mappers/toDisplayText'
 import { toDisplaySummary } from '../../adapters/mappers/toDisplaySummary'
 
 const Page = styled.main`
@@ -198,9 +197,10 @@ function DicePage() {
   } = useDiceRoll()
   const message = pendingRoll
     ? 'Wild die rolled a 1. Decide if this is a complication.'
-    : result
-      ? toDisplayText(result)
-      : 'Roll to see the outcome.'
+    : 'Roll to see the outcome.'
+  const rollFormula = result
+    ? `Rolled ${result.otherDice.length + 1}D6${result.modifier ? `+${result.modifier}` : ''}`
+    : null
   const summary = result ? toDisplaySummary(result) : []
 
   return (
@@ -237,7 +237,7 @@ function DicePage() {
         <Panel>
           <PanelTitle>Roll</PanelTitle>
           <RollButton onRoll={roll} selectionCount={selectionCount} modifier={modifier} disabled={pendingRoll !== null} />
-          <ResultDisplay text={message} />
+          <ResultDisplay text={message} formula={rollFormula ?? undefined} total={result?.total} />
 
           {result ? (
             <>
