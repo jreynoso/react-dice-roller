@@ -26,15 +26,16 @@ const Cell = styled.button<{
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 0.6rem;
-  border: 2px solid ${({ $selected }) => ($selected ? '#b24b1f' : '#d6cbbb')};
-  background: ${({ $selected }) => ($selected ? '#fff1e2' : '#fffaf2')};
+  border: 2px solid ${({ $selected }) => ($selected ? 'var(--accent)' : 'var(--border)')};
+  background: ${({ $selected }) => ($selected ? 'rgba(245, 214, 76, 0.18)' : 'var(--panel-secondary)')};
+  box-shadow: ${({ $selected }) => ($selected ? '0 0 12px rgba(245, 214, 76, 0.3)' : 'none')};
   cursor: pointer;
 `
 
 const Count = styled.p`
   margin: 0;
   font-size: 0.95rem;
-  color: #6f604b;
+  color: var(--muted);
 `
 
 function DiceSelector({

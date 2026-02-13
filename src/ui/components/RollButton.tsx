@@ -11,13 +11,14 @@ const Button = styled.button`
   border: none;
   border-radius: 999px;
   background: var(--accent);
-  color: #fffaf2;
+  color: var(--accent-ink);
   font-size: 1rem;
   padding: 0.75rem 2rem;
   cursor: pointer;
+  box-shadow: 0 0 18px rgba(245, 214, 76, 0.35);
 
   &:hover {
-    filter: brightness(0.95);
+    filter: brightness(1.06);
   }
 
   &:disabled {
