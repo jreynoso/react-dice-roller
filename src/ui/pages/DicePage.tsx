@@ -118,6 +118,26 @@ const Summary = styled.div`
   color: var(--muted);
 `
 
+const RollDetails = styled.details`
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--panel-secondary);
+  padding: 0.85rem 1rem;
+`
+
+const RollDetailsSummary = styled.summary`
+  cursor: pointer;
+  font-weight: 600;
+  user-select: none;
+`
+
+const RollDetailsBody = styled.div`
+  margin-top: 0.9rem;
+  display: grid;
+  gap: 1rem;
+`
+
 const ModalOverlay = styled.div`
   position: fixed;
   inset: 0;
@@ -243,11 +263,16 @@ function DicePage() {
                 </WildRolls>
               ) : null}
 
-              <Summary>
-                {summary.map((line, index) => (
-                  <div key={`${index}-${line}`}>{line}</div>
-                ))}
-              </Summary>
+              <RollDetails>
+                <RollDetailsSummary>Details</RollDetailsSummary>
+                <RollDetailsBody>
+                <Summary>
+                  {summary.map((line, index) => (
+                    <div key={`${index}-${line}`}>{line}</div>
+                  ))}
+                </Summary>
+                </RollDetailsBody>
+              </RollDetails>
             </>
           ) : null}
         </Panel>
