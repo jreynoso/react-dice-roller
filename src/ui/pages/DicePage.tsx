@@ -28,7 +28,7 @@ const Header = styled.header`
 
   p {
     margin: 0.5rem 0 0;
-    color: #6f604b;
+    color: var(--muted);
   }
 `
 
@@ -37,7 +37,7 @@ const Overline = styled.p`
   letter-spacing: 0.25rem;
   font-size: 0.75rem;
   margin: 0 0 0.5rem;
-  color: #6f604b;
+  color: var(--muted);
 `
 
 const Panels = styled.div`
@@ -74,10 +74,11 @@ const ModifierGroup = styled.div`
 `
 
 const ModifierButton = styled.button<{ $active: boolean }>`
-  height: 3.5rem;
-  border: 1px solid ${({ $active }) => ($active ? '#b24b1f' : '#d6cbbb')};
+  height: 3rem;
+  border: 1px solid ${({ $active }) => ($active ? 'var(--accent)' : 'var(--border)')};
   border-radius: 999px;
-  background: ${({ $active }) => ($active ? '#fff1e2' : '#fffaf2')};
+  background: ${({ $active }) => ($active ? 'rgba(245, 214, 76, 0.18)' : 'var(--panel-secondary)')};
+  color: ${({ $active }) => ($active ? 'var(--accent)' : 'var(--ink)')};
   padding: 0.4rem 0.9rem;
   font-size: 1rem;
   cursor: pointer;
@@ -99,7 +100,7 @@ const WildRolls = styled.div`
 const WildRollsLabel = styled.p`
   margin: 0;
   font-size: 0.9rem;
-  color: #6f604b;
+  color: var(--muted);
 `
 
 const WildRollsRow = styled.div`
@@ -114,20 +115,20 @@ const Summary = styled.div`
   gap: 0.35rem;
   text-align: center;
   font-size: 0.95rem;
-  color: #3b3126;
+  color: var(--muted);
 `
 
 const ModalOverlay = styled.div`
   position: fixed;
   inset: 0;
-  background: rgba(18, 14, 10, 0.35);
+  background: var(--overlay);
   display: grid;
   place-items: center;
   padding: 1.5rem;
 `
 
 const Modal = styled.div`
-  background: #fffaf2;
+  background: var(--panel);
   border: 1px solid var(--border);
   border-radius: 1.25rem;
   padding: 2rem;
@@ -145,7 +146,7 @@ const ModalTitle = styled.h3`
 
 const ModalBody = styled.p`
   margin: 0;
-  color: #3b3126;
+  color: var(--muted);
 `
 
 const ModalActions = styled.div`
@@ -155,10 +156,10 @@ const ModalActions = styled.div`
 `
 
 const ModalButton = styled.button<{ $primary?: boolean }>`
-  border: 1px solid ${({ $primary }) => ($primary ? '#b24b1f' : '#d6cbbb')};
+  border: 1px solid ${({ $primary }) => ($primary ? 'var(--accent)' : 'var(--border)')};
   border-radius: 999px;
-  background: ${({ $primary }) => ($primary ? '#b24b1f' : '#fffaf2')};
-  color: ${({ $primary }) => ($primary ? '#fffaf2' : '#3b3126')};
+  background: ${({ $primary }) => ($primary ? 'var(--accent)' : 'var(--panel-secondary)')};
+  color: ${({ $primary }) => ($primary ? 'var(--accent-ink)' : 'var(--ink)')};
   padding: 0.5rem 1.2rem;
   font-size: 0.95rem;
   cursor: pointer;
