@@ -128,10 +128,9 @@ function ResultDisplay({
         </DiceRow>
         {wildExtraRolls.length > 0 ? (
           <WildRolls>
-            <WildRollsLabel>Wild extra rolls</WildRollsLabel>
             <WildRollsRow>
               {wildExtraRolls.map((face, index) => (
-                <DiceFace key={`wild-${index}`} face={face} isWild />
+                <DiceFace key={`wild-${index}`} face={face} isWild label="Bonus" />
               ))}
             </WildRollsRow>
           </WildRolls>
