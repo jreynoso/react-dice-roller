@@ -27,8 +27,8 @@ const Cell = styled.button<{
   height: 2.5rem;
   border-radius: 0.6rem;
   border: 2px solid ${({ $selected }) => ($selected ? 'var(--accent)' : 'var(--border)')};
-  background: ${({ $selected }) => ($selected ? 'rgba(245, 214, 76, 0.18)' : 'var(--panel-secondary)')};
-  box-shadow: ${({ $selected }) => ($selected ? '0 0 12px rgba(245, 214, 76, 0.3)' : 'none')};
+  background: ${({ $selected }) => ($selected ? 'var(--panel-inactive)' : 'var(--panel-secondary)')};
+  box-shadow: ${({ $selected }) => ($selected ? '0 0 12px var(--panel-box-shadow)' : 'none')};
   cursor: pointer;
 `
 

@@ -16,7 +16,7 @@ const Button = styled.button`
   padding: 0.75rem 2rem;
   height: 3rem;
   cursor: pointer;
-  box-shadow: 0 0 18px rgba(245, 214, 76, 0.35);
+  box-shadow: 0 0 18px var(--panel-box-shadow);
 
   &:hover {
     filter: brightness(1.06);

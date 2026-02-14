@@ -44,7 +44,7 @@ const TotalBox = styled.button<{ $isComplication: boolean; $active: boolean }>`
   border: 2px solid
     ${({ $isComplication, $active }) => {
       if ($isComplication && $active) {
-        return '#cc6a00'
+        return 'var(--complication)'
       }
       return $active ? 'var(--accent)' : 'var(--border)'
     }};
@@ -55,9 +55,9 @@ const TotalBox = styled.button<{ $isComplication: boolean; $active: boolean }>`
   font-weight: 700;
   background: ${({ $isComplication, $active }) => {
     if ($isComplication && $active) {
-      return 'rgba(204, 106, 0, 0.2)'
+      return 'var(--complication-secondary)'
     }
-    return $active ? 'rgba(245, 214, 76, 0.18)' : 'var(--panel)'
+    return $active ? 'var(--panel-inactive)' : 'var(--panel)'
   }};
   color: var(--ink);
   flex: 0 0 auto;

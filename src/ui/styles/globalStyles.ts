@@ -10,10 +10,14 @@ const GlobalStyles = createGlobalStyle`
     --accent-ink: #17120a;
     --panel: #111a2b;
     --panel-secondary: #0c1322;
+    --panel-inactive: rgba(245, 214, 76, 0.18);
+    --panel-box-shadow: rgba(245, 214, 76, 0.3);
     --border: #2f3f61;
     --wild-bg: #2a1216;
     --wild-border: #ff6d5f;
     --wild-ink: #ffcdc4;
+    --complication: #cc6a00;
+    --complication-secondary: rgba(204, 106, 0, 0.2);
     --overlay: rgba(1, 4, 10, 0.72);
     --shadow: 0 22px 65px rgba(0, 0, 0, 0.42);
   }
