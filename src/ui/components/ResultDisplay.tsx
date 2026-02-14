@@ -103,19 +103,6 @@ const DiceRow = styled.div`
   justify-content: center;
 `
 
-const WildRolls = styled.div`
-  display: grid;
-  gap: 0.5rem;
-  justify-items: center;
-`
-
-const WildRollsRow = styled.div`
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  justify-content: center;
-`
-
 function ResultDisplay({
   text,
   result,
@@ -144,16 +131,10 @@ function ResultDisplay({
             <DiceFace key={`die-${index}`} face={face} disabled={index === subtractedOtherIndex} />
           ))}
           <DiceFace face={result.wild.firstRoll} isWild label="Wild" disabled={subtractsDice} />
+          {wildExtraRolls.map((face, index) => (
+            <DiceFace key={`wild-${index}`} face={face} isWild label="Bonus" />
+          ))}
         </DiceRow>
-        {wildExtraRolls.length > 0 ? (
-          <WildRolls>
-            <WildRollsRow>
-              {wildExtraRolls.map((face, index) => (
-                <DiceFace key={`wild-${index}`} face={face} isWild label="Bonus" />
-              ))}
-            </WildRollsRow>
-          </WildRolls>
-        ) : null}
         <Callout aria-live="polite">
           <Formula>{formula}</Formula>
           <TotalOptions>
