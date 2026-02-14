@@ -29,7 +29,7 @@ export function toDisplaySummary(result: ScoredRoll): string[] {
     } else if (result.wild.complicationDecision === false) {
       const highest = result.highestOther ?? 0
       lines.push(
-        `Wild die (subtract highest): -${highest}`,
+        `Wild die (ignore and subtract highest): -${highest}`,
       )
     }
   } else {
