@@ -176,7 +176,7 @@ function ResultDisplay({
                   title="complication"
                   onClick={() => onComplicationDecision?.(true)}
                 >
-                  {`${complicationTotal}!`}
+                  {complicationTotal}
                 </TotalBox>
               </>
             ) : (
