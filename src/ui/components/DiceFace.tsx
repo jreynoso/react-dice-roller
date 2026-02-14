@@ -9,10 +9,10 @@ type DiceFaceProps = {
 }
 
 const Face = styled.div<{ $isWild: boolean; $disabled: boolean }>`
-  width: 3.5rem;
-  height: 3.5rem;
+  width: 3rem;
+  height: 3rem;
   border: 2px solid ${({ $isWild }) => ($isWild ? 'var(--wild-border)' : 'var(--border)')};
-  border-radius: 0.85rem;
+  border-radius: 0.6rem;
   display: grid;
   place-items: center;
   font-size: 1.4rem;
@@ -23,7 +23,7 @@ const Face = styled.div<{ $isWild: boolean; $disabled: boolean }>`
 `
 
 const Label = styled.span<{ $disabled: boolean }>`
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   letter-spacing: 0.12rem;
   text-transform: uppercase;
   color: var(--muted);

@@ -15,16 +15,16 @@ const Selector = styled.section`
 
 const Grid = styled.div<{ $columns: number; $rows: number }>`
   display: grid;
-  grid-template-columns: repeat(${({ $columns }) => $columns}, 2.5rem);
-  grid-template-rows: repeat(${({ $rows }) => $rows}, 2.5rem);
+  grid-template-columns: repeat(${({ $columns }) => $columns}, 3rem);
+  grid-template-rows: repeat(${({ $rows }) => $rows}, 3rem);
   gap: 0.5rem;
 `
 
 const Cell = styled.button<{
   $selected: boolean
 }>`
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 3rem;
+  height: 3rem;
   border-radius: 0.6rem;
   border: 2px solid ${({ $selected }) => ($selected ? 'var(--accent)' : 'var(--border)')};
   background: ${({ $selected }) => ($selected ? 'var(--panel-inactive)' : 'var(--panel-secondary)')};
