@@ -124,17 +124,15 @@ function ResultDisplay({
   if (result) {
     const formula = `Rolled ${result.otherDice.length + 1}D6${result.modifier ? `+${result.modifier}` : ''}`
     const isComplicationRoll = result.wild.isComplicationRoll
-    const selectedIsComplication = isComplicationRoll && result.wild.complicationDecision === true
-    const selectedIsNormal = !isComplicationRoll || result.wild.complicationDecision !== true
+    const isComplication = isComplicationRoll && result.wild.complicationDecision === true
+    const isNormal = !isComplicationRoll || result.wild.complicationDecision !== true
     const normalTotal = isComplicationRoll
       ? result.baseTotal - (1 + (result.highestOther ?? 0)) + result.modifier
       : result.total
     const complicationTotal = result.baseTotal + result.modifier
     const summary = toDisplaySummary(result)
-    const summaryStartIndex = summary.findIndex((line) => line.startsWith('Other dice'))
-    const detailLines = summaryStartIndex >= 0 ? summary.slice(summaryStartIndex) : summary
     const wildExtraRolls = result.wild.rolls.slice(1)
-    const subtractsDice = isComplicationRoll && selectedIsNormal
+    const subtractsDice = isComplicationRoll && isNormal
     const subtractedOtherIndex = subtractsDice && result.highestOther
       ? result.otherDice.findIndex((value) => value === result.highestOther)
       : -1
@@ -164,7 +162,7 @@ function ResultDisplay({
                 <TotalBox
                   type="button"
                   $isComplication={false}
-                  $active={selectedIsNormal}
+                  $active={isNormal}
                   aria-label={`Normal total ${normalTotal}`}
                   onClick={() => onComplicationDecision?.(false)}
                 >
@@ -173,7 +171,7 @@ function ResultDisplay({
                 <TotalBox
                   type="button"
                   $isComplication={true}
-                  $active={selectedIsComplication}
+                  $active={isComplication}
                   aria-label={`Complication total ${complicationTotal}`}
                   title="complication"
                   onClick={() => onComplicationDecision?.(true)}
@@ -193,12 +191,12 @@ function ResultDisplay({
             )}
           </TotalOptions>
         </Callout>
-        {detailLines.length > 0 ? (
+        {summary.length > 0 ? (
           <RollDetails>
             <RollDetailsSummary>Details</RollDetailsSummary>
             <RollDetailsBody>
               <Summary>
-                {detailLines.map((line, index) => (
+                {summary.map((line, index) => (
                   <div key={`${index}-${line}`}>{line}</div>
                 ))}
               </Summary>
