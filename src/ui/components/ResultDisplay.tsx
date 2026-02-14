@@ -46,7 +46,7 @@ const TotalBox = styled.button<{ $isComplication: boolean; $active: boolean }>`
       if ($isComplication && $active) {
         return 'var(--complication)'
       }
-      return $active ? 'var(--accent)' : 'var(--border)'
+      return $active ? '#174ec2' : 'var(--border)'
     }};
   border-radius: 0.75rem;
   display: grid;
@@ -57,7 +57,7 @@ const TotalBox = styled.button<{ $isComplication: boolean; $active: boolean }>`
     if ($isComplication && $active) {
       return 'var(--complication-secondary)'
     }
-    return $active ? 'var(--panel-inactive)' : 'var(--panel)'
+    return $active ? '#192c4e' : 'var(--panel)'
   }};
   color: var(--ink);
   flex: 0 0 auto;
