@@ -14,7 +14,7 @@ export type DiceRollState = {
   setComplicationDecision: (decision: boolean) => void
 }
 
-const defaultSelectionCount = 5
+const defaultSelectionCount = 3
 const defaultModifier = 0
 
 export function useDiceRoll(): DiceRollState {

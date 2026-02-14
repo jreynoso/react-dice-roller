@@ -103,7 +103,7 @@ function DicePage() {
 
       <Panels>
         <Panel>
-          <PanelTitle>Select dice</PanelTitle>
+          <PanelTitle>Dice Pool</PanelTitle>
           <DiceSelector
             columns={4}
             rows={3}

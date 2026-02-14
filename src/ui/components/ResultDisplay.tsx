@@ -122,7 +122,7 @@ function ResultDisplay({
   onComplicationDecision,
 }: ResultDisplayProps) {
   if (result) {
-    const formula = `Rolled ${result.otherDice.length + 1}D6${result.modifier ? `+${result.modifier}` : ''}`
+    const formula = `Rolled ${result.otherDice.length + 1}D${result.modifier ? `+${result.modifier}` : ''}`
     const isComplicationRoll = result.wild.isComplicationRoll
     const isComplication = isComplicationRoll && result.wild.complicationDecision === true
     const isNormal = !isComplicationRoll || result.wild.complicationDecision !== true
