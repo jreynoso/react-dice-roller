@@ -42,6 +42,13 @@ const GlobalStyles = createGlobalStyle`
   #root {
     min-height: 100vh;
   }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
 `
 
 export default GlobalStyles
