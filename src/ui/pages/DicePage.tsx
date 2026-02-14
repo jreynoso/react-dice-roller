@@ -16,7 +16,7 @@ const Page = styled.main`
 
 const Header = styled.header`
   text-align: center;
-  max-width: 32rem;
+  max-width: 30rem;
 
   h1 {
     margin: 0;

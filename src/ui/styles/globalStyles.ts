@@ -31,12 +31,22 @@ const GlobalStyles = createGlobalStyle`
   body {
     margin: 0;
     min-height: 100vh;
-    font-family: 'Georgia', 'Times New Roman', serif;
+    font-family: 'Spectral', 'Georgia', 'Times New Roman', serif;
     color: var(--ink);
     background:
       radial-gradient(circle at 20% 15%, rgba(245, 214, 76, 0.18) 0%, transparent 35%),
       radial-gradient(circle at 78% 18%, rgba(107, 176, 255, 0.18) 0%, transparent 40%),
       linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg) 72%);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Cinzel', 'Georgia', 'Times New Roman', serif;
+    font-weight: 600;
   }
 
   #root {
