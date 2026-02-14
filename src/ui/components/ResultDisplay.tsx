@@ -6,6 +6,7 @@ import type { ScoredRoll } from '../../domain/dice/rollResult'
 type ResultDisplayProps = {
   text?: string
   result?: ScoredRoll | null
+  onComplicationDecision?: (decision: boolean) => void
 }
 
 const Text = styled.p`
@@ -31,18 +32,36 @@ const Formula = styled.p`
   color: var(--muted);
 `
 
-const TotalBox = styled.div<{ $isComplication: boolean }>`
+const TotalOptions = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+`
+
+const TotalBox = styled.button<{ $isComplication: boolean; $active: boolean }>`
   width: 3rem;
   height: 3rem;
-  border: 2px solid ${({ $isComplication }) => ($isComplication ? '#cc6a00' : 'var(--border)')};
+  border: 2px solid
+    ${({ $isComplication, $active }) => {
+      if ($isComplication && $active) {
+        return '#cc6a00'
+      }
+      return $active ? 'var(--accent)' : 'var(--border)'
+    }};
   border-radius: 0.75rem;
   display: grid;
   place-items: center;
   font-size: 1.2rem;
   font-weight: 700;
-  background: ${({ $isComplication }) => ($isComplication ? 'rgba(204, 106, 0, 0.2)' : 'var(--panel)')};
+  background: ${({ $isComplication, $active }) => {
+    if ($isComplication && $active) {
+      return 'rgba(204, 106, 0, 0.2)'
+    }
+    return $active ? 'rgba(245, 214, 76, 0.18)' : 'var(--panel)'
+  }};
   color: var(--ink);
   flex: 0 0 auto;
+  cursor: pointer;
 `
 
 const RollDetails = styled.details`
@@ -100,15 +119,22 @@ const WildRollsRow = styled.div`
 function ResultDisplay({
   text,
   result,
+  onComplicationDecision,
 }: ResultDisplayProps) {
   if (result) {
-    const formula = `Rolled ${result.otherDice.length + 1}D${result.modifier ? `+${result.modifier}` : ''}`
+    const formula = `Rolled ${result.otherDice.length + 1}D6${result.modifier ? `+${result.modifier}` : ''}`
+    const isComplicationRoll = result.wild.isComplicationRoll
+    const selectedIsComplication = isComplicationRoll && result.wild.complicationDecision === true
+    const selectedIsNormal = !isComplicationRoll || result.wild.complicationDecision !== true
+    const normalTotal = isComplicationRoll
+      ? result.baseTotal - (1 + (result.highestOther ?? 0)) + result.modifier
+      : result.total
+    const complicationTotal = result.baseTotal + result.modifier
     const summary = toDisplaySummary(result)
     const summaryStartIndex = summary.findIndex((line) => line.startsWith('Other dice'))
     const detailLines = summaryStartIndex >= 0 ? summary.slice(summaryStartIndex) : summary
     const wildExtraRolls = result.wild.rolls.slice(1)
-    const subtractsDice = result.wild.isComplicationRoll && result.wild.complicationDecision === false
-    const isComplication = result.wild.isComplicationRoll && result.wild.complicationDecision === true
+    const subtractsDice = isComplicationRoll && selectedIsNormal
     const subtractedOtherIndex = subtractsDice && result.highestOther
       ? result.otherDice.findIndex((value) => value === result.highestOther)
       : -1
@@ -132,13 +158,40 @@ function ResultDisplay({
         ) : null}
         <Callout aria-live="polite">
           <Formula>{formula}</Formula>
-          <TotalBox
-            $isComplication={isComplication}
-            aria-label={isComplication ? `Total ${result.total} complication` : `Total ${result.total}`}
-            title={isComplication ? 'complication' : undefined}
-          >
-            {isComplication ? `${result.total}!` : result.total}
-          </TotalBox>
+          <TotalOptions>
+            {isComplicationRoll ? (
+              <>
+                <TotalBox
+                  type="button"
+                  $isComplication={false}
+                  $active={selectedIsNormal}
+                  aria-label={`Normal total ${normalTotal}`}
+                  onClick={() => onComplicationDecision?.(false)}
+                >
+                  {normalTotal}
+                </TotalBox>
+                <TotalBox
+                  type="button"
+                  $isComplication={true}
+                  $active={selectedIsComplication}
+                  aria-label={`Complication total ${complicationTotal}`}
+                  title="complication"
+                  onClick={() => onComplicationDecision?.(true)}
+                >
+                  {`${complicationTotal}!`}
+                </TotalBox>
+              </>
+            ) : (
+              <TotalBox
+                type="button"
+                $isComplication={false}
+                $active={true}
+                aria-label={`Total ${result.total}`}
+              >
+                {result.total}
+              </TotalBox>
+            )}
+          </TotalOptions>
         </Callout>
         {detailLines.length > 0 ? (
           <RollDetails>

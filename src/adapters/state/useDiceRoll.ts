@@ -11,8 +11,7 @@ export type DiceRollState = {
   setSelectionCount: (count: number) => void
   modifier: number
   setModifier: (value: number) => void
-  pendingRoll: RolledDice | null
-  decideComplication: (decision: boolean) => void
+  setComplicationDecision: (decision: boolean) => void
 }
 
 const defaultSelectionCount = 5
@@ -20,36 +19,55 @@ const defaultModifier = 0
 
 export function useDiceRoll(): DiceRollState {
   const [result, setResult] = useState<ScoredRoll | null>(null)
-  const [selectionCount, setSelectionCount] = useState(defaultSelectionCount)
-  const [modifier, setModifier] = useState(defaultModifier)
-  const [pending, setPending] = useState<{
+  const [selectionCount, setSelectionCountState] = useState(defaultSelectionCount)
+  const [modifier, setModifierState] = useState(defaultModifier)
+  const [activeRoll, setActiveRoll] = useState<{
     rolled: RolledDice
     modifier: number
   } | null>(null)
 
+  const setSelectionCount = useCallback((count: number) => {
+    setSelectionCountState((current) => {
+      if (current === count) {
+        return current
+      }
+
+      setActiveRoll(null)
+      setResult(null)
+      return count
+    })
+  }, [])
+
+  const setModifier = useCallback((value: number) => {
+    setModifierState((current) => {
+      if (current === value) {
+        return current
+      }
+
+      setActiveRoll(null)
+      setResult(null)
+      return value
+    })
+  }, [])
+
   const roll = useCallback(() => {
     const rolled = rollDice(randomInt, selectionCount)
-    setResult(null)
+    const isComplicationRoll = rolled.wild.rolls[0] === 1
+    const initialDecision = isComplicationRoll ? false : null
 
-    if (rolled.wild.rolls[0] === 1) {
-      setPending({ rolled, modifier })
-      return
-    }
-
-    setPending(null)
-    setResult(scoreRoll(rolled, null, modifier))
+    setActiveRoll({ rolled, modifier })
+    setResult(scoreRoll(rolled, initialDecision, modifier))
   }, [selectionCount, modifier])
 
-  const decideComplication = useCallback(
+  const setComplicationDecision = useCallback(
     (decision: boolean) => {
-      if (!pending) {
+      if (!activeRoll || activeRoll.rolled.wild.rolls[0] !== 1) {
         return
       }
 
-      setResult(scoreRoll(pending.rolled, decision, pending.modifier))
-      setPending(null)
+      setResult(scoreRoll(activeRoll.rolled, decision, activeRoll.modifier))
     },
-    [pending],
+    [activeRoll],
   )
 
   return {
@@ -59,7 +77,6 @@ export function useDiceRoll(): DiceRollState {
     setSelectionCount,
     modifier,
     setModifier,
-    pendingRoll: pending?.rolled ?? null,
-    decideComplication,
+    setComplicationDecision,
   }
 }

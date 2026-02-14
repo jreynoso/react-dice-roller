@@ -81,53 +81,6 @@ const ModifierButton = styled.button<{ $active: boolean }>`
   cursor: pointer;
 `
 
-const ModalOverlay = styled.div`
-  position: fixed;
-  inset: 0;
-  background: var(--overlay);
-  display: grid;
-  place-items: center;
-  padding: 1.5rem;
-`
-
-const Modal = styled.div`
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 1.25rem;
-  padding: 2rem;
-  max-width: 420px;
-  width: 100%;
-  display: grid;
-  gap: 1rem;
-  box-shadow: var(--shadow);
-`
-
-const ModalTitle = styled.h3`
-  margin: 0;
-  font-size: 1.2rem;
-`
-
-const ModalBody = styled.p`
-  margin: 0;
-  color: var(--muted);
-`
-
-const ModalActions = styled.div`
-  display: flex;
-  gap: 0.75rem;
-  justify-content: center;
-`
-
-const ModalButton = styled.button<{ $primary?: boolean }>`
-  border: 1px solid ${({ $primary }) => ($primary ? 'var(--accent)' : 'var(--border)')};
-  border-radius: 999px;
-  background: ${({ $primary }) => ($primary ? 'var(--accent)' : 'var(--panel-secondary)')};
-  color: ${({ $primary }) => ($primary ? 'var(--accent-ink)' : 'var(--ink)')};
-  padding: 0.5rem 1.2rem;
-  font-size: 0.95rem;
-  cursor: pointer;
-`
-
 function DicePage() {
   const {
     result,
@@ -136,12 +89,9 @@ function DicePage() {
     setSelectionCount,
     modifier,
     setModifier,
-    pendingRoll,
-    decideComplication,
+    setComplicationDecision,
   } = useDiceRoll()
-  const message = pendingRoll
-    ? 'Wild die rolled a 1. Decide if this is a complication.'
-    : 'Roll to see the outcome.'
+  const message = 'Roll to see the outcome.'
 
   return (
     <Page>
@@ -176,32 +126,14 @@ function DicePage() {
 
         <Panel>
           <PanelTitle>Roll</PanelTitle>
-          <RollButton onRoll={roll} selectionCount={selectionCount} modifier={modifier} disabled={pendingRoll !== null} />
-          <ResultDisplay text={message} result={result} />
+          <RollButton onRoll={roll} selectionCount={selectionCount} modifier={modifier} />
+          <ResultDisplay
+            text={message}
+            result={result}
+            onComplicationDecision={setComplicationDecision}
+          />
         </Panel>
       </Panels>
-      {pendingRoll ? (
-        <ModalOverlay>
-          <Modal role="dialog" aria-modal="true" aria-label="Complication">
-            <ModalTitle>Wild Die Outcome</ModalTitle>
-            <ModalBody>
-              The wild die rolled a 1 on the first roll.
-            </ModalBody>
-            <ModalActions>
-              <ModalButton type="button" onClick={() => decideComplication(true)}>
-                Treat as a complication
-              </ModalButton>
-              <ModalButton
-                type="button"
-                $primary
-                onClick={() => decideComplication(false)}
-              >
-                Normal
-              </ModalButton>
-            </ModalActions>
-          </Modal>
-        </ModalOverlay>
-      ) : null}
     </Page>
   )
 }
